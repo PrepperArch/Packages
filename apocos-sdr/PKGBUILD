@@ -1,6 +1,6 @@
 pkgbase=apocos
 pkgver=0.0.1
-pkgrel=1
+pkgrel=2
 pkgname=apocos-sdr
 pkgdesc="Software Defined Audio for Apocalypse OS"
 arch=('any')
