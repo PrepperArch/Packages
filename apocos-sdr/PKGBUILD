@@ -10,7 +10,7 @@ depends=(
     'apocos-desktop'
 
     # utilities
-    'multimon-ng' 'gqrx'
+    'multimon-ng' 'gqrx' 'sdrpp-git'
         
     # Soapy SDR
     'soapysdr' 'soapyrtlsdr' 'soapyaudio'
@@ -21,6 +21,3 @@ depends=(
     # gnuradio
     'gnuradio' 'gnuradio-osmosdr' 'gnuradio-companion'
 )
-
-
-
