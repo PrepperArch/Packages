@@ -1,0 +1,46 @@
+# Maintainer: Henrik Andersson
+
+pkgname=sdrpp-git
+pkgver=nightly.r199.g794d6ff
+pkgrel=1
+pkgdesc="The bloat-free SDR receiver"
+arch=(x86_64)
+url="https://www.sdrpp.org/"
+license=(GPL3)
+depends=(fftw glew glfw libvolk)
+_plugindeps=(codec2 libad9361 libiio rtaudio soapysdr)
+makedepends=(cmake git "${_plugindeps[@]}")
+optdepends=("${_plugindeps[@]}")
+provides=("$pkgname")
+conflicts=("$pkgname")
+source=("$pkgname::git+https://github.com/AlexandreRouma/SDRPlusPlus.git")
+b2sums=('SKIP')
+
+pkgver() {
+  git -C $pkgname describe --long --abbrev=7 | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+
+build() {
+    cmake -B build -S $pkgname \
+          -DOPT_BUILD_AIRSPY_SOURCE=OFF \
+          -DOPT_BUILD_AIRSPYHF_SOURCE=OFF \
+          -DOPT_BUILD_HACKRF_SOURCE=OFF \
+          -DOPT_BUILD_HERMES_SOURCE=OFF \
+          -DOPT_BUILD_PLUTOSDR_SOURCE=OFF \
+          -DOPT_BUILD_RFSPACE_SOURCE=OFF \
+          -DOPT_BUILD_RTL_SDR_SOURCE=OFF \
+          -DOPT_BUILD_SDRPLAY_SOURCE=OFF \
+          -DOPT_BUILD_SOAPY_SOURCE=ON \
+          -DOPT_BUILD_ATV_DECODER=ON \
+          -DOPT_BUILD_FALCON9_DECODER=OFF \
+          -DOPT_BUILD_KG_SSTV_DECODER=OFF \
+          -DOPT_BUILD_M17_DECODER=ON \
+          -DOPT_BUILD_WEATHER_SAT_DECODER=OFF \
+          -DOPT_BUILD_SCHEDULER=ON
+    make -j10 -C build
+}
+
+package() {
+	make -C build DESTDIR="$pkgdir" install
+}
